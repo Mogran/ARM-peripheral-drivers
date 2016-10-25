@@ -1,0 +1,45 @@
+# 说明 
+
+这个函数使用的是内嵌汇编的的写法，内嵌汇编的基本语法是
+汇编和C的调用遵循ATPCS(ARM处理器过程调用标准)语法格式要求
+
+
+# ATPCS规则
+	寄存器r0~r3 子程序之间用r0~r3进行传递参数，当参数多过4个时用堆栈来传递
+	r4~r11 在子程序中用来保存局部变量用
+	r12 用来保存堆栈指针IP
+	r13 堆栈指针SP
+	r14 链接寄存器LC
+	r15 程序技术器PC
+
+# 内嵌汇编的基本语法：
+__asm__ volatile (
+		"instruction list" 
+		: output Operand list 
+		: Input Operand list
+		：Clobber/Modify list )
+
+
+# instruction list
+	指令列表
+	要求：
+		1.每条指令都必须用“ ”包含起来
+		2.指令换行用\n 或者 分号隔开
+
+# output Operand list
+	输出操作符表
+	要求：
+		1.每一个输出操作符由3个部分组成
+		2.第一部分 [ ],方括号中填写符号名，可以不填写
+		3.第二部分 "=r" 这段必须为这个，必填也
+		4.第三部分 ( ) 圆括号中填写的是C表达式构成，可以不填写
+		5.每个部分使用，逗号隔开
+
+# Input Operand list
+	表示方法同上面的Output Operand list	
+
+# Clobber/Modify List
+	告诉GCC编译器，该内敛汇编可能会对某些寄存器或者内存进行修改，请编译器
+	注意优化
+
+
